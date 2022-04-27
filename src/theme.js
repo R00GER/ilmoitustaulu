@@ -85,6 +85,10 @@ export const lightTheme = createTheme({
     background: {
       default: "#f2f2f2",
     },
+    secondary: {
+      main: "#fff",
+      bg: COLOR_MEDIUM_DARK,
+    },
     ...themeDefaults,
   },
   typography: {

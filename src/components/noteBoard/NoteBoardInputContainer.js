@@ -1,6 +1,7 @@
 import { makeStyles } from "@mui/styles";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import TextEditor from "../TextEditor";
 import { EditableTextField } from "../UI/fieldComponents";
 
 const useStyles = makeStyles({
@@ -21,6 +22,11 @@ const useStyles = makeStyles({
     padding: "0.5rem 1rem",
   },
 });
+
+const editorStyles = {
+  padding: "1rem",
+};
+
 const BulletinBoardInputContainer = ({ items, setItems }) => {
   const [inputValues, setInputValues] = useState({ title: "", note: "" });
   const [showExpandedNewItemInput, setShowExpandedNewItemInput] =
@@ -79,25 +85,28 @@ const BulletinBoardInputContainer = ({ items, setItems }) => {
         autoComplete="off"
         fullWidth
         InputProps={{ className: classes.noteField, disableUnderline: true }}
-        name="note"
+        name="title"
         variant="standard"
-        placeholder="Add note..."
+        placeholder={showExpandedNewItemInput ? "Title" : "Add note..."}
         buttonText="Add"
         buttonVariant="contained"
         onChange={(e) => changeNewBulletinBoardItem(e)}
-        value={inputValues.note}
+        value={inputValues.title}
         onFocus={handleShowExpandedNewItemInput}
+        autoFocus={!showExpandedNewItemInput}
       />
       {showExpandedNewItemInput && (
+        // <TextEditor styles={editorStyles} placeholder="Add note.." />
         <EditableTextField
+          autoFocus
           autoComplete="off"
           fullWidth
-          name="title"
+          name="note"
           variant="standard"
-          placeholder="Title"
+          placeholder="Add note..."
           InputProps={{ className: classes.titleField, disableUnderline: true }}
           onChange={(e) => changeNewBulletinBoardItem(e)}
-          value={inputValues.title}
+          value={inputValues.note}
           onFocus={handleShowExpandedNewItemInput}
         />
       )}

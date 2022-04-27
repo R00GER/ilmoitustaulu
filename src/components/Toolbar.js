@@ -4,7 +4,7 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/ModeNight";
 import ButtonComponent from "./UI/ButtonComponent";
 import { ThemeModeContext } from "./ThemeModeProvider";
-import BulletinBoardInputContainer from "./bulletinBoard/BulletinBoardInputContainer";
+import BulletinBoardInputContainer from "./noteBoard/NoteBoardInputContainer";
 
 const useStyles = makeStyles({
   toolbarContainer: {

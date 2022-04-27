@@ -20,9 +20,12 @@ export const EditableTextField = ({
   variant,
   size,
   onFocus,
+  onBlur,
+  autoFocus,
 }) => {
   return (
     <TextField
+      autoFocus={autoFocus}
       autoComplete={autoComplete}
       name={name}
       fullWidth={fullWidth}
@@ -36,6 +39,12 @@ export const EditableTextField = ({
       onFocus={(e) => {
         if (onFocus) {
           onFocus(e);
+        }
+      }}
+      onBlur={(e) => {
+        if (onBlur) {
+          console.log("blur");
+          onBlur(e);
         }
       }}
     />

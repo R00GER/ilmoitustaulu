@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Droppable } from "react-beautiful-dnd";
 import { DragDropContext } from "react-beautiful-dnd";
 import "./App.css";
-import BulletinBoard from "./components/bulletinBoard/BulletinBoard";
+import BulletinBoard from "./components/noteBoard/NoteBoard";
 import Toolbar from "./components/Toolbar";
 
 function App() {

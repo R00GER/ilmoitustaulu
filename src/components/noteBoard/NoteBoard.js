@@ -1,6 +1,6 @@
 import { makeStyles } from "@mui/styles";
 import { Draggable } from "react-beautiful-dnd";
-import BoardItemCard from "./BoardItemCard";
+import BoardItemCard from "./NoteBoardItem";
 
 const useStyles = makeStyles({
   canvasContainer: {
@@ -19,6 +19,13 @@ const useStyles = makeStyles({
 const BulletinBoard = ({ items, drobbableProvided, setItems }) => {
   const classes = useStyles();
 
+  const handleSaveTitle = (id, title) =>
+    setItems(
+      items.map((noteItem) =>
+        noteItem.id === id ? { ...noteItem, title } : noteItem
+      )
+    );
+
   return (
     <div
       className={classes.canvasContainer}
@@ -30,13 +37,11 @@ const BulletinBoard = ({ items, drobbableProvided, setItems }) => {
           <Draggable key={item.id} draggableId={item.id} index={index}>
             {(provided) => (
               <BoardItemCard
-                item={item.id}
+                item={item}
                 ref={provided.innerRef}
-                title={item.title}
                 draggableProps={provided.draggableProps}
                 dragHandleProps={provided.dragHandleProps}
-                setItems={setItems}
-                items={items}
+                handleSaveTitle={handleSaveTitle}
               />
             )}
           </Draggable>

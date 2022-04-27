@@ -1,4 +1,4 @@
-import { Button, IconButton } from "@mui/material";
+import { Button, IconButton, Typography } from "@mui/material";
 
 function ButtonComponent({
   children,
@@ -8,15 +8,41 @@ function ButtonComponent({
   classes,
   text,
   iconButton,
+  size,
+  color,
+  disableRipple,
+  disableHoverEffect,
+  disableTouchRipple,
+  disableTextTransform,
 }) {
   return !iconButton ? (
     <Button
+      sx={{
+        ...(disableHoverEffect
+          ? {
+              ":hover": {
+                bgcolor: "transparent",
+              },
+            }
+          : {}),
+        ...(disableTextTransform
+          ? {
+              textTransform: "none",
+              textAlign: "left",
+              display: "inline-block",
+            }
+          : {}),
+      }}
       className={classes}
       fullWidth={fullWidth}
       variant={variant}
       onClick={onClick}
+      size={size}
+      color={color}
+      disableRipple={disableRipple}
+      disableTouchRipple={disableTouchRipple}
     >
-      {text}
+      {disableTextTransform ? <Typography>{text}</Typography> : { text }}
     </Button>
   ) : (
     <IconButton className={classes} onClick={onClick}>

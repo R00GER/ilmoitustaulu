@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
-import { Droppable } from "react-beautiful-dnd";
-import { DragDropContext } from "react-beautiful-dnd";
+import { Droppable , DragDropContext } from "react-beautiful-dnd";
 import "./App.css";
+import ApplicationSideMenu from "./components/ApplicationSideMenu";
 import ModalComponent from "./components/ModalComponent";
 import { ModalContext } from "./components/ModalContextProvider";
 import BulletinBoard from "./components/noteBoard/NoteBoard";
@@ -9,6 +9,7 @@ import Toolbar from "./components/Toolbar";
 
 function App() {
   const [items, setItems] = useState([]);
+  const [sideMenuOpen, setSideMenuOpen] = useState(true);
 
   const { showModal, setShowModal } = useContext(ModalContext);
 
@@ -36,7 +37,15 @@ function App() {
 
   return (
     <div className="App">
-      <Toolbar items={items} setItems={setItems} />
+      <ApplicationSideMenu
+        open={sideMenuOpen}
+        onClose={() => setSideMenuOpen(false)}
+      />
+      <Toolbar
+        items={items}
+        setItems={setItems}
+        setSideMenuOpen={setSideMenuOpen}
+      />
       <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
         <Droppable droppableId="droppableId" direction="vertical">
           {(provided) => (

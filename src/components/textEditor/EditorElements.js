@@ -1,4 +1,4 @@
-export const EditorElement = ({ attributes, children, element }) => {
+export function EditorElement({ attributes, children, element }) {
   const style = { textAlign: element.align };
   switch (element.type) {
     case "block-quote":
@@ -44,9 +44,9 @@ export const EditorElement = ({ attributes, children, element }) => {
         </p>
       );
   }
-};
+}
 
-export const EditorLeafElement = ({ attributes, children, leaf }) => {
+export function EditorLeafElement({ attributes, children, leaf }) {
   if (leaf.bold) {
     children = <strong>{children}</strong>;
   }
@@ -64,4 +64,4 @@ export const EditorLeafElement = ({ attributes, children, leaf }) => {
   }
 
   return <span {...attributes}>{children}</span>;
-};
+}

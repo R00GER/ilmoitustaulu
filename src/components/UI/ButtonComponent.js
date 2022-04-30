@@ -1,6 +1,5 @@
 import PropTypes from "prop-types";
 import { Button, IconButton, Typography } from "@mui/material";
-import ListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 
 function ButtonComponent({
   children,

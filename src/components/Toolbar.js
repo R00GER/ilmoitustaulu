@@ -1,57 +1,75 @@
-import PropTypes from "prop-types";
-import { makeStyles } from "@mui/styles";
-import { useContext } from "react";
-import MenuIcon from "@mui/icons-material/Menu";
-import AccountIcon from "@mui/icons-material/AccountCircle";
-import LightModeIcon from "@mui/icons-material/LightMode";
-import DarkModeIcon from "@mui/icons-material/ModeNight";
-// import ListIcon from "@mui/icons-material/List";
-import List from "@mui/icons-material/List";
-
-import ButtonComponent from "./UI/ButtonComponent";
-import { ThemeModeContext } from "./ThemeModeProvider";
-import BulletinBoardInputContainer from "./noteBoard/NoteBoardInputContainer";
+import PropTypes from 'prop-types';
+import { makeStyles } from '@mui/styles';
+import { useContext } from 'react';
+import MenuIcon from '@mui/icons-material/Menu';
+import AccountIcon from '@mui/icons-material/AccountCircle';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import DarkModeIcon from '@mui/icons-material/ModeNight';
+import ButtonComponent from './UI/ButtonComponent';
+import { ThemeModeContext } from './ThemeModeProvider';
+import NoteBoardInputContainer from './noteBoard/NoteBoardInputContainer';
 
 const useStyles = makeStyles({
   toolbarContainer: {
-    width: "100%",
-    display: "flex",
-    alignItems: "flex-start",
-    marginBottom: "3rem",
+    width: '100%',
+    display: 'flex',
+    alignItems: 'flex-start',
+    marginBottom: '3rem',
   },
-  icon: {},
 });
 
-const Toolbar = ({ items, setItems }) => {
+function Toolbar({ items, setItems, setSideMenuOpen }) {
   const classes = useStyles();
 
   const { darkMode, setDarkMode } = useContext(ThemeModeContext);
 
+  const toolbarItems = [
+    {
+      id: 'menu',
+      component: (
+        <ButtonComponent iconButton onClick={() => setSideMenuOpen(true)}>
+          <MenuIcon />
+        </ButtonComponent>
+      ),
+      onClick: () => setSideMenuOpen(true),
+    },
+    {
+      id: 'noteInputContainaer',
+      component: <NoteBoardInputContainer items={items} setItems={setItems} />,
+      onClick: () => {},
+    },
+    {
+      id: 'account',
+      component: (
+        <ButtonComponent iconButton>
+          <AccountIcon />
+        </ButtonComponent>
+      ),
+      onClick: () => {},
+    },
+    {
+      id: 'theme',
+      component: (
+        <ButtonComponent iconButton onClick={() => setDarkMode(!darkMode)}>
+          {darkMode ? <LightModeIcon /> : <DarkModeIcon />}
+        </ButtonComponent>
+      ),
+      onClick: () => {},
+    },
+  ];
+
   return (
     <div className={classes.toolbarContainer}>
-      <ButtonComponent iconButton>
-        <MenuIcon />
-      </ButtonComponent>
-      <BulletinBoardInputContainer items={items} setItems={setItems} />
-      <ButtonComponent iconButton>
-        <AccountIcon />
-      </ButtonComponent>
-      <ButtonComponent
-        iconButton
-        classes={classes.iconButton}
-        onClick={() => setDarkMode(!darkMode)}
-      >
-        {darkMode ? <LightModeIcon /> : <DarkModeIcon />}
-      </ButtonComponent>
+      {toolbarItems.map(({ component }) => component)}
     </div>
   );
-};
+}
 
 Toolbar.propTypes = {
   items: PropTypes.oneOfType([
     PropTypes.arrayOf(Object),
     PropTypes.instanceOf(Array),
-  ]).isRequired,
+  ]),
   setItems: PropTypes.func.isRequired,
 };
 

@@ -1,16 +1,16 @@
-import { PropTypes } from "prop-types";
-import { TextField } from "@mui/material";
-import { makeStyles } from "@mui/styles";
-import ButtonComponent from "./ButtonComponent";
+import { PropTypes } from 'prop-types';
+import { TextField } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import ButtonComponent from './ButtonComponent';
 
 const useStyles = makeStyles({
   textFieldButtonRowContainer: {
-    display: "flex",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center',
   },
 });
 
-export const EditableTextField = ({
+export function EditableTextField({
   autoComplete,
   name,
   fullWidth,
@@ -23,34 +23,33 @@ export const EditableTextField = ({
   onFocus,
   onBlur,
   autoFocus,
-}) => {
+}) {
   return (
     <TextField
       autoFocus={autoFocus}
       autoComplete={autoComplete}
       name={name}
       fullWidth={fullWidth}
-      variant={variant || "outlined"}
+      variant={variant || 'outlined'}
       value={value}
-      onChange={(e) => onChange(e.target)}
-      inputProps={{ style: { color: "#f2f2f2" } }}
+      onChange={e => onChange(e.target)}
+      inputProps={{ style: { color: '#f2f2f2' } }}
       InputProps={{ ...InputProps }}
       placeholder={placeholder}
       size={size}
-      onFocus={(e) => {
+      onFocus={e => {
         if (onFocus) {
           onFocus(e);
         }
       }}
-      onBlur={(e) => {
+      onBlur={e => {
         if (onBlur) {
-          console.log("blur");
           onBlur(e);
         }
       }}
     />
   );
-};
+}
 
 EditableTextField.propTypes = {
   name: PropTypes.string.isRequired,
@@ -68,7 +67,7 @@ EditableTextField.propTypes = {
 };
 
 EditableTextField.defaultProps = {
-  autoComplete: "off",
+  autoComplete: 'off',
   fullWidth: false,
   InputProps: {},
   placeholder: undefined,
@@ -80,7 +79,7 @@ EditableTextField.defaultProps = {
   autoFocus: false,
 };
 
-export const EditableTextFieldAndButtonRow = ({
+export function EditableTextFieldAndButtonRow({
   buttonText,
   buttonVariant,
   fullWidth,
@@ -89,7 +88,7 @@ export const EditableTextFieldAndButtonRow = ({
   value,
   onChange,
   onClick,
-}) => {
+}) {
   const classes = useStyles();
   return (
     <div className={classes.textFieldButtonRowContainer}>
@@ -107,7 +106,7 @@ export const EditableTextFieldAndButtonRow = ({
       />
     </div>
   );
-};
+}
 
 EditableTextFieldAndButtonRow.propTypes = {
   buttonText: PropTypes.string.isRequired,

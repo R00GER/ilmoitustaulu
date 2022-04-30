@@ -1,26 +1,27 @@
-import PropTypes from "prop-types";
-import { useCallback, useMemo, useState } from "react";
-import { makeStyles } from "@mui/styles";
-import BoldIcon from "@mui/icons-material/FormatBold";
-import ItalicIcon from "@mui/icons-material/FormatItalic";
-import UnderlinedIcon from "@mui/icons-material/FormatUnderlined";
-import ListBulletedIcon from "@mui/icons-material/FormatListBulleted";
-import ListNumberedIcon from "@mui/icons-material/FormatListNumbered";
-import { useSlate, Slate, Editable, withReact } from "slate-react";
+// import PropTypes from 'prop-types';
+import { useCallback, useMemo, useState } from 'react';
+import { makeStyles } from '@mui/styles';
+import BoldIcon from '@mui/icons-material/FormatBold';
+import ItalicIcon from '@mui/icons-material/FormatItalic';
+import UnderlinedIcon from '@mui/icons-material/FormatUnderlined';
+import ListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import ListNumberedIcon from '@mui/icons-material/FormatListNumbered';
+import { Slate, Editable, withReact } from 'slate-react';
 import {
   Editor,
   Transforms,
   createEditor,
   //   Descendant,
   Element as SlateElement,
-} from "slate";
-import ButtonComponent from "../UI/ButtonComponent";
-import { EditorElement, EditorLeafElement } from "./EditorElements";
+} from 'slate';
+import { EditorElement, EditorLeafElement } from './EditorElements';
+import MarkButton from './MarkButton';
+import BlockButton from './BlockButton';
 
 const useStyles = makeStyles({
   textEditorContainer: {
     // minHeight: "100px",
-    marginTop: "1rem",
+    marginTop: '1rem',
   },
   buttonToolbar: {
     // borderBottom: "1px solid #3e4154",
@@ -29,35 +30,22 @@ const useStyles = makeStyles({
 });
 
 const textEditorStyles = {
-  padding: "0.5rem",
+  padding: '0.5rem',
 };
 
-const TextEditorContainer = ({
-  children,
-  styles,
-  placeholder,
-  autoFocus,
-  value,
-  onChange,
-}) => {
+function TextEditorContainer({ placeholder, autoFocus, value, onChange }) {
   const [initialValue] = useState([
     {
-      type: "paragraph",
+      type: 'paragraph',
       children: [{ text: value }],
     },
   ]);
   const classes = useStyles();
-  const renderElement = useCallback(
-    (props) => <EditorElement {...props} />,
-    []
-  );
-  const renderLeaf = useCallback(
-    (props) => <EditorLeafElement {...props} />,
-    []
-  );
+  const renderElement = useCallback(props => <EditorElement {...props} />, []);
+  const renderLeaf = useCallback(props => <EditorLeafElement {...props} />, []);
   const editor = useMemo(() => withReact(createEditor()), []);
 
-  const LIST_TYPES = ["numbered-list", "bulleted-list"];
+  const LIST_TYPES = ['numbered-list', 'bulleted-list'];
 
   const isMarkActive = (editor, format) => {
     const marks = Editor.marks(editor);
@@ -74,31 +62,29 @@ const TextEditorContainer = ({
     }
   };
 
-  const isBlockActive = (editor, format, blockType = "type") => {
+  const isBlockActive = (editor, format, blockType = 'type') => {
     const { selection } = editor;
     if (!selection) return false;
 
     const [match] = Array.from(
       Editor.nodes(editor, {
         at: Editor.unhangRange(editor, selection),
-        match: (n) =>
+        match: n =>
           !Editor.isEditor(n) &&
           SlateElement.isElement(n) &&
           n[blockType] === format,
-      })
+      }),
     );
 
     return !!match;
   };
 
   const toggleBlock = (editor, format) => {
-    const isActive = isBlockActive(editor, format, "type");
+    const isActive = isBlockActive(editor, format, 'type');
     const isList = LIST_TYPES.includes(format);
 
-    console.log(isActive, isList);
-
     Transforms.unwrapNodes(editor, {
-      match: (n) =>
+      match: n =>
         !Editor.isEditor(n) &&
         SlateElement.isElement(n) &&
         LIST_TYPES.includes(n.type),
@@ -106,7 +92,7 @@ const TextEditorContainer = ({
       split: true,
     });
     const newProperties = {
-      type: isActive ? "paragraph" : isList ? "list-item" : format,
+      type: isActive ? 'paragraph' : isList ? 'list-item' : format,
     };
     // if (TEXT_ALIGN_TYPES.includes(format)) {
     //   newProperties = {
@@ -123,45 +109,6 @@ const TextEditorContainer = ({
       const block = { type: format, children: [] };
       Transforms.wrapNodes(editor, block);
     }
-  };
-
-  const MarkButton = ({ format, icon }) => {
-    const editor = useSlate();
-    return (
-      <ButtonComponent
-        iconButton
-        square
-        active={isMarkActive(editor, format)}
-        onMouseDown={(event) => {
-          event.preventDefault();
-          toggleMark(editor, format);
-        }}
-      >
-        {icon}
-      </ButtonComponent>
-    );
-  };
-
-  const BlockButton = ({ format, icon }) => {
-    const editor = useSlate();
-    return (
-      <ButtonComponent
-        iconButton
-        square
-        active={isBlockActive(
-          editor,
-          format,
-          "type"
-          //   TEXT_ALIGN_TYPES.includes(format) ? "align" : "type"
-        )}
-        onMouseDown={(event) => {
-          event.preventDefault();
-          toggleBlock(editor, format);
-        }}
-      >
-        {icon}
-      </ButtonComponent>
-    );
   };
 
   //   const BlockButton = ({ format, icon }) => {
@@ -189,18 +136,43 @@ const TextEditorContainer = ({
       <Slate
         editor={editor}
         value={initialValue}
-        onChange={(returnArray) => {
+        onChange={returnArray => {
           if (onChange) {
             onChange(returnArray);
           }
         }}
       >
         <div className={classes.buttonToolbar}>
-          <MarkButton format="bold" icon={<BoldIcon />} />
-          <MarkButton format="italic" icon={<ItalicIcon />} />
-          <MarkButton format="underline" icon={<UnderlinedIcon />} />
-          <BlockButton format="numbered-list" icon={<ListBulletedIcon />} />
-          <BlockButton format="bulleted-list" icon={<ListNumberedIcon />} />
+          <MarkButton
+            format="bold"
+            icon={<BoldIcon />}
+            isMarkActive={isMarkActive}
+            toggleMark={toggleMark}
+          />
+          <MarkButton
+            format="italic"
+            icon={<ItalicIcon />}
+            isMarkActive={isMarkActive}
+            toggleMark={toggleMark}
+          />
+          <MarkButton
+            format="underline"
+            icon={<UnderlinedIcon />}
+            isMarkActive={isMarkActive}
+            toggleMark={toggleMark}
+          />
+          <BlockButton
+            format="numbered-list"
+            icon={<ListBulletedIcon />}
+            isBlockActive={isBlockActive}
+            toggleBlock={toggleBlock}
+          />
+          <BlockButton
+            format="bulleted-list"
+            icon={<ListNumberedIcon />}
+            isBlockActive={isBlockActive}
+            toggleBlock={toggleBlock}
+          />
         </div>
         <Editable
           renderElement={renderElement}
@@ -212,6 +184,6 @@ const TextEditorContainer = ({
       </Slate>
     </div>
   );
-};
+}
 
 export default TextEditorContainer;

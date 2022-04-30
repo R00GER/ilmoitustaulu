@@ -1,3 +1,4 @@
+import { PropTypes } from "prop-types";
 import { TextField } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import ButtonComponent from "./ButtonComponent";
@@ -51,6 +52,34 @@ export const EditableTextField = ({
   );
 };
 
+EditableTextField.propTypes = {
+  name: PropTypes.string.isRequired,
+  autoComplete: PropTypes.string,
+  fullWidth: PropTypes.bool,
+  InputProps: PropTypes.instanceOf(Object),
+  placeholder: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  onChange: PropTypes.func,
+  variant: PropTypes.string,
+  size: PropTypes.string,
+  onFocus: PropTypes.func,
+  onBlur: PropTypes.func,
+  autoFocus: PropTypes.bool,
+};
+
+EditableTextField.defaultProps = {
+  autoComplete: "off",
+  fullWidth: false,
+  InputProps: {},
+  placeholder: undefined,
+  onChange: undefined,
+  variant: undefined,
+  size: undefined,
+  onFocus: undefined,
+  onBlur: undefined,
+  autoFocus: false,
+};
+
 export const EditableTextFieldAndButtonRow = ({
   buttonText,
   buttonVariant,
@@ -78,4 +107,23 @@ export const EditableTextFieldAndButtonRow = ({
       />
     </div>
   );
+};
+
+EditableTextFieldAndButtonRow.propTypes = {
+  buttonText: PropTypes.string.isRequired,
+  buttonVariant: PropTypes.string,
+  fullWidth: PropTypes.bool,
+  InputProps: PropTypes.instanceOf(Object),
+  placeholder: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  onChange: PropTypes.func,
+  onClick: PropTypes.func.isRequired,
+};
+
+EditableTextFieldAndButtonRow.defaultProps = {
+  buttonVariant: undefined,
+  fullWidth: false,
+  InputProps: {},
+  placeholder: undefined,
+  onChange: undefined,
 };

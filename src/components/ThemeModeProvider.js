@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import {
   createContext,
   useMemo,
@@ -29,5 +30,9 @@ function ThemeModeProvider({ children }) {
     </ThemeModeContext.Provider>
   );
 }
+
+ThemeModeProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 export default ThemeModeProvider;

@@ -1,12 +1,16 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Droppable } from "react-beautiful-dnd";
 import { DragDropContext } from "react-beautiful-dnd";
 import "./App.css";
+import ModalComponent from "./components/ModalComponent";
+import { ModalContext } from "./components/ModalContextProvider";
 import BulletinBoard from "./components/noteBoard/NoteBoard";
 import Toolbar from "./components/Toolbar";
 
 function App() {
   const [items, setItems] = useState([]);
+
+  const { showModal, setShowModal } = useContext(ModalContext);
 
   const reorder = (list, startIndex, endIndex) => {
     const resultList = Array.from(list);
@@ -40,10 +44,13 @@ function App() {
               items={items}
               setItems={setItems}
               drobbableProvided={provided}
+              showModal={showModal}
+              setShowModal={setShowModal}
             />
           )}
         </Droppable>
       </DragDropContext>
+      <ModalComponent open={showModal} />
     </div>
   );
 }

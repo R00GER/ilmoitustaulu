@@ -1,6 +1,9 @@
+import PropTypes from "prop-types";
 import { makeStyles } from "@mui/styles";
 import { Draggable } from "react-beautiful-dnd";
-import BoardItemCard from "./NoteBoardItem";
+import NoteBoardItem from "./NoteBoardItem";
+import { useContext } from "react";
+import { ModalContext } from "../ModalContextProvider";
 
 const useStyles = makeStyles({
   canvasContainer: {
@@ -16,14 +19,18 @@ const useStyles = makeStyles({
   },
 });
 
-const BulletinBoard = ({ items, drobbableProvided, setItems }) => {
+const NoteBoard = ({
+  items,
+  drobbableProvided,
+  setItems,
+  showModal,
+  setShowModal,
+}) => {
   const classes = useStyles();
 
-  const handleSaveTitle = (id, title) =>
+  const handleSaveItem = (updatedItem) =>
     setItems(
-      items.map((noteItem) =>
-        noteItem.id === id ? { ...noteItem, title } : noteItem
-      )
+      items.map((item) => (item.id === updatedItem.id ? updatedItem : item))
     );
 
   return (
@@ -36,12 +43,14 @@ const BulletinBoard = ({ items, drobbableProvided, setItems }) => {
         return (
           <Draggable key={item.id} draggableId={item.id} index={index}>
             {(provided) => (
-              <BoardItemCard
+              <NoteBoardItem
                 item={item}
                 ref={provided.innerRef}
                 draggableProps={provided.draggableProps}
                 dragHandleProps={provided.dragHandleProps}
-                handleSaveTitle={handleSaveTitle}
+                handleSaveItem={handleSaveItem}
+                showModal={showModal}
+                setShowModal={setShowModal}
               />
             )}
           </Draggable>
@@ -52,4 +61,10 @@ const BulletinBoard = ({ items, drobbableProvided, setItems }) => {
   );
 };
 
-export default BulletinBoard;
+NoteBoard.propTypes = {
+  items: PropTypes.arrayOf(Object).isRequired,
+  // drobbableProvided: PropTypes.isRequired,
+  setItems: PropTypes.func.isRequired,
+};
+
+export default NoteBoard;

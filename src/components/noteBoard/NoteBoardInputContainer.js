@@ -1,11 +1,11 @@
+import PropTypes from "prop-types";
 import { makeStyles } from "@mui/styles";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import TextEditor from "../TextEditor";
 import { EditableTextField } from "../UI/fieldComponents";
 
 const useStyles = makeStyles({
-  bulletinBoardInputContainer: {
+  noteBoardInputContainer: {
     maxWidth: "500px",
     width: "500px",
     minWidth: "300px",
@@ -23,18 +23,14 @@ const useStyles = makeStyles({
   },
 });
 
-const editorStyles = {
-  padding: "1rem",
-};
-
-const BulletinBoardInputContainer = ({ items, setItems }) => {
+const NoteBoardInputContainer = ({ items, setItems }) => {
   const [inputValues, setInputValues] = useState({ title: "", note: "" });
   const [showExpandedNewItemInput, setShowExpandedNewItemInput] =
     useState(false);
 
   const classes = useStyles();
 
-  const addNewBulletinBoardItem = () => {
+  const handleNewNoteBoardItem = () => {
     const newItem = {
       title: inputValues.title || "",
       note: inputValues.note || "",
@@ -45,7 +41,7 @@ const BulletinBoardInputContainer = ({ items, setItems }) => {
     setInputValues({ title: "", note: "" });
   };
 
-  const changeNewBulletinBoardItem = (e) => {
+  const handleNoteBoardItemChange = (e) => {
     const { name, value } = e;
 
     const updatedFields = {
@@ -70,7 +66,7 @@ const BulletinBoardInputContainer = ({ items, setItems }) => {
     if (!e.currentTarget.contains(e.relatedTarget)) {
       // clicked outside of parent and children
       if (inputValues.title || inputValues.note) {
-        addNewBulletinBoardItem();
+        handleNewNoteBoardItem();
       }
       setShowExpandedNewItemInput(false);
     }
@@ -78,7 +74,7 @@ const BulletinBoardInputContainer = ({ items, setItems }) => {
 
   return (
     <div
-      className={classes.bulletinBoardInputContainer}
+      className={classes.noteBoardInputContainer}
       onBlur={(e) => handleHideExpandedNewItemInput(e)}
     >
       <EditableTextField
@@ -90,13 +86,12 @@ const BulletinBoardInputContainer = ({ items, setItems }) => {
         placeholder={showExpandedNewItemInput ? "Title" : "Add note..."}
         buttonText="Add"
         buttonVariant="contained"
-        onChange={(e) => changeNewBulletinBoardItem(e)}
+        onChange={(e) => handleNoteBoardItemChange(e)}
         value={inputValues.title}
         onFocus={handleShowExpandedNewItemInput}
         autoFocus={!showExpandedNewItemInput}
       />
       {showExpandedNewItemInput && (
-        // <TextEditor styles={editorStyles} placeholder="Add note.." />
         <EditableTextField
           autoFocus
           autoComplete="off"
@@ -105,7 +100,7 @@ const BulletinBoardInputContainer = ({ items, setItems }) => {
           variant="standard"
           placeholder="Add note..."
           InputProps={{ className: classes.titleField, disableUnderline: true }}
-          onChange={(e) => changeNewBulletinBoardItem(e)}
+          onChange={(e) => handleNoteBoardItemChange(e)}
           value={inputValues.note}
           onFocus={handleShowExpandedNewItemInput}
         />
@@ -114,4 +109,9 @@ const BulletinBoardInputContainer = ({ items, setItems }) => {
   );
 };
 
-export default BulletinBoardInputContainer;
+NoteBoardInputContainer.propTypes = {
+  items: PropTypes.arrayOf(Object).isRequired,
+  setItems: PropTypes.func.isRequired,
+};
+
+export default NoteBoardInputContainer;

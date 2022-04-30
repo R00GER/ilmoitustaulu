@@ -1,8 +1,9 @@
+import PropTypes from "prop-types";
 import { useMemo, useState } from "react";
 import { createEditor } from "slate";
 import { Slate, Editable, withReact } from "slate-react";
 
-const TextEditor = ({ styles, placeholder, autoFocus, value }) => {
+const TextEditor = ({ styles, placeholder, autoFocus, value, onChange }) => {
   const [initialValue] = useState([
     {
       type: "paragraph",
@@ -11,7 +12,17 @@ const TextEditor = ({ styles, placeholder, autoFocus, value }) => {
   ]);
   const editor = useMemo(() => withReact(createEditor()), []);
   return (
-    <Slate editor={editor} value={initialValue}>
+    <Slate
+      editor={editor}
+      value={initialValue}
+      onChange={(returnArray) => {
+        console.log("onchange");
+        if (onChange) {
+          console.log("inside");
+          onChange(returnArray);
+        }
+      }}
+    >
       <Editable
         style={styles}
         placeholder={placeholder}
@@ -19,6 +30,13 @@ const TextEditor = ({ styles, placeholder, autoFocus, value }) => {
       />
     </Slate>
   );
+};
+
+TextEditor.propTypes = {
+  styles: PropTypes.objectOf(PropTypes.string),
+  placeholder: PropTypes.string,
+  autoFocus: PropTypes.bool,
+  // value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
 
 export default TextEditor;

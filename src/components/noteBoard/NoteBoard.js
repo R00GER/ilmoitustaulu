@@ -2,9 +2,10 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@mui/styles';
 import { Draggable } from 'react-beautiful-dnd';
 import NoteBoardItem from './NoteBoardItem';
+import BoardContainer from '../BoardContainer';
 
 const useStyles = makeStyles({
-  canvasContainer: {
+  noteBoardContainer: {
     width: '100vw',
     maxWidth: '100%',
     maxHeight: '100%',
@@ -32,8 +33,8 @@ function NoteBoard({
     );
 
   return (
-    <div
-      className={classes.canvasContainer}
+    <BoardContainer
+      classes={classes.noteBoardContainer}
       ref={drobbableProvided.innerRef}
       {...drobbableProvided.droppableProps}
     >
@@ -53,7 +54,7 @@ function NoteBoard({
         </Draggable>
       ))}
       {drobbableProvided.placeholder}
-    </div>
+    </BoardContainer>
   );
 }
 

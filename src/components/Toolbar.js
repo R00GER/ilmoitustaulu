@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { makeStyles } from '@mui/styles';
-import { useContext } from 'react';
+import { forwardRef, useContext } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountIcon from '@mui/icons-material/AccountCircle';
 import LightModeIcon from '@mui/icons-material/LightMode';
@@ -15,10 +15,11 @@ const useStyles = makeStyles({
     display: 'flex',
     alignItems: 'flex-start',
     marginBottom: '3rem',
+    height: 'var(--toolbar-height)',
   },
 });
 
-function Toolbar({ items, setItems, setSideMenuOpen }) {
+const Toolbar = forwardRef(({ items, setItems, setSideMenuOpen }, ref) => {
   const classes = useStyles();
 
   const { darkMode, setDarkMode } = useContext(ThemeModeContext);
@@ -73,11 +74,11 @@ function Toolbar({ items, setItems, setSideMenuOpen }) {
   ];
 
   return (
-    <div className={classes.toolbarContainer}>
+    <div ref={ref} className={classes.toolbarContainer}>
       {toolbarItems.map(({ component }) => component)}
     </div>
   );
-}
+});
 
 Toolbar.propTypes = {
   items: PropTypes.oneOfType([

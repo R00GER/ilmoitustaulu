@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Droppable, DragDropContext } from 'react-beautiful-dnd';
 import './App.css';
 import ApplicationSideMenu from './components/ApplicationSideMenu';
@@ -15,8 +15,6 @@ function App() {
   const [sideMenuOpen, setSideMenuOpen] = useState(true);
 
   const { showModal, setShowModal } = useContext(ModalContext);
-
-  const toolbarRef = useRef(null);
 
   const reorder = (list, startIndex, endIndex) => {
     const resultList = Array.from(list);
@@ -47,17 +45,12 @@ function App() {
         onClose={() => setSideMenuOpen(false)}
       />
       <Toolbar
-        ref={toolbarRef}
         items={items}
         setItems={setItems}
         setSideMenuOpen={setSideMenuOpen}
       />
       {isEmpty(projects) ? (
-        <ProjectsEmptyView
-          toolbarRef={toolbarRef}
-          setProjects={setProjects}
-          projects={projects}
-        />
+        <ProjectsEmptyView setProjects={setProjects} projects={projects} />
       ) : (
         <DragDropContext onDragEnd={result => onDragEnd(result)}>
           <Droppable droppableId="droppableId" direction="vertical">

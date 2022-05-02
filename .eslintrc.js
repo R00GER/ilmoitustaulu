@@ -37,5 +37,6 @@ module.exports = {
     'no-param-reassign': 0,
     'no-nested-ternary': 'off',
     'react/jsx-no-duplicate-props': 'off',
+    'react/no-unstable-nested-components': 'off',
   },
 };

@@ -1,5 +1,7 @@
-import PropTypes from "prop-types";
-import { Button, IconButton, Typography } from "@mui/material";
+import PropTypes from 'prop-types';
+import { Button, IconButton, Typography } from '@mui/material';
+import ConditionalWrapper from '../ConditionalWrapper';
+import TooltipComponent from '../TooltipComponent';
 
 function ButtonComponent({
   children,
@@ -19,22 +21,50 @@ function ButtonComponent({
   onMouseDown,
   active,
   square,
+  tooltipLabel,
 }) {
-  return !iconButton ? (
+  if (iconButton) {
+    return (
+      <ConditionalWrapper
+        condition={tooltipLabel}
+        wrapper={children => (
+          <TooltipComponent title={tooltipLabel}>{children}</TooltipComponent>
+        )}
+      >
+        <IconButton
+          sx={{
+            borderRadius: square ? '0px' : '50%',
+          }}
+          selected={active || selected}
+          className={classes}
+          onClick={onClick}
+          onMouseDown={e => {
+            if (onMouseDown) {
+              onMouseDown(e);
+            }
+          }}
+        >
+          {children}
+        </IconButton>
+      </ConditionalWrapper>
+    );
+  }
+
+  return (
     <Button
       sx={{
         ...(disableHoverEffect
           ? {
-              ":hover": {
-                bgcolor: "transparent",
+              ':hover': {
+                bgcolor: 'transparent',
               },
             }
           : {}),
         ...(disableTextTransform
           ? {
-              textTransform: "none",
-              textAlign: "left",
-              display: "inline-block",
+              textTransform: 'none',
+              textAlign: 'left',
+              display: 'inline-block',
             }
           : {}),
       }}
@@ -49,32 +79,16 @@ function ButtonComponent({
     >
       {disableTextTransform ? <Typography>{text}</Typography> : text}
     </Button>
-  ) : (
-    <IconButton
-      sx={{
-        borderRadius: square ? "0px" : "50%",
-      }}
-      selected={active || selected}
-      className={classes}
-      onClick={onClick}
-      onMouseDown={(e) => {
-        if (onMouseDown) {
-          onMouseDown(e);
-        }
-      }}
-    >
-      {children}
-    </IconButton>
   );
 }
 
 ButtonComponent.propTypes = {
   children: PropTypes.node.isRequired,
-  fullWidth: PropTypes.bool.isRequired,
+  fullWidth: PropTypes.bool,
   variant: PropTypes.string.isRequired,
   onClick: PropTypes.func,
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
-  text: PropTypes.string.isRequired,
+  text: PropTypes.string,
   iconButton: PropTypes.bool,
   size: PropTypes.string,
   color: PropTypes.string,
@@ -85,14 +99,16 @@ ButtonComponent.propTypes = {
 };
 
 ButtonComponent.defaultProps = {
+  fullWidth: false,
   onClick: undefined,
   iconButton: false,
-  size: "medium",
+  size: 'medium',
   color: undefined,
   disableRipple: false,
   disableHoverEffect: false,
   disableTouchRipple: false,
   disableTextTransform: false,
+  text: '',
 };
 
 export default ButtonComponent;

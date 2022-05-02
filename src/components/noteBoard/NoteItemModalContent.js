@@ -1,8 +1,11 @@
 import { makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
 import { useDebounce } from 'use-hooks';
+import DeleteIcon from '@mui/icons-material/Delete';
+import TimeIcon from '@mui/icons-material/AccessTime';
 import TextEditorContainer from '../textEditor/TextEditorContainer';
 import { EditableTextField } from '../UI/FieldComponents';
+import ButtonComponent from '../UI/ButtonComponent';
 
 const useStyles = makeStyles({
   noteItemModalContentContainer: {
@@ -50,6 +53,17 @@ function NoteItemModalContent({ item, handleSaveItem }) {
     setInputValues({ ...inputValues, note: noteValue });
   };
 
+  const tools = [
+    {
+      tooltipLabel: 'Remind',
+      icon: <TimeIcon />,
+    },
+    {
+      tooltipLabel: 'Delete note',
+      icon: <DeleteIcon />,
+    },
+  ];
+
   return (
     <div className={classes.noteItemModalContentContainer}>
       <div className={classes.noteItemModalContentTitleContainer}>
@@ -70,6 +84,13 @@ function NoteItemModalContent({ item, handleSaveItem }) {
           value={inputValues.note}
           onChange={e => onTextEditorChange(e)}
         />
+      </div>
+      <div className={classes.noteItemModalContentTools}>
+        {tools.map(tool => (
+          <ButtonComponent iconButton tooltipLabel={tool.tooltipLabel}>
+            {tool.icon}
+          </ButtonComponent>
+        ))}
       </div>
     </div>
   );

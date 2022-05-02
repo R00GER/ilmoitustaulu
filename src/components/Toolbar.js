@@ -27,7 +27,11 @@ function Toolbar({ items, setItems, setSideMenuOpen }) {
     {
       id: 'menu',
       component: (
-        <ButtonComponent iconButton onClick={() => setSideMenuOpen(true)}>
+        <ButtonComponent
+          key="menu"
+          iconButton
+          onClick={() => setSideMenuOpen(true)}
+        >
           <MenuIcon />
         </ButtonComponent>
       ),
@@ -35,13 +39,19 @@ function Toolbar({ items, setItems, setSideMenuOpen }) {
     },
     {
       id: 'noteInputContainaer',
-      component: <NoteBoardInputContainer items={items} setItems={setItems} />,
+      component: (
+        <NoteBoardInputContainer
+          key="noteInputContainer"
+          items={items}
+          setItems={setItems}
+        />
+      ),
       onClick: () => {},
     },
     {
       id: 'account',
       component: (
-        <ButtonComponent iconButton>
+        <ButtonComponent key="account" iconButton>
           <AccountIcon />
         </ButtonComponent>
       ),
@@ -50,7 +60,11 @@ function Toolbar({ items, setItems, setSideMenuOpen }) {
     {
       id: 'theme',
       component: (
-        <ButtonComponent iconButton onClick={() => setDarkMode(!darkMode)}>
+        <ButtonComponent
+          key="theme"
+          iconButton
+          onClick={() => setDarkMode(!darkMode)}
+        >
           {darkMode ? <LightModeIcon /> : <DarkModeIcon />}
         </ButtonComponent>
       ),

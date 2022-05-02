@@ -1,3 +1,4 @@
+import { Fragment, useState } from 'react';
 import {
   Collapse,
   Drawer,
@@ -13,7 +14,6 @@ import ArrowRightIcon from '@mui/icons-material/ChevronRight';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { makeStyles } from '@mui/styles';
-import { useState } from 'react';
 
 const useStyles = makeStyles({
   list: {
@@ -74,7 +74,7 @@ function ApplicationSideMenu({ open, onClose }) {
       </ListItem>
       <List className={classes.list}>
         {list.map(item => (
-          <>
+          <Fragment key={item.label}>
             <ListItem button key={item.label} onClick={item.onClick}>
               <ListItemIcon>{item.labelIcon}</ListItemIcon>
               <ListItemText primary={item.label} />
@@ -95,7 +95,11 @@ function ApplicationSideMenu({ open, onClose }) {
                     </ListItemIcon>
                   </ListItem>
                   {projects.map(project => (
-                    <ListItem button className={classes.nestedListItem}>
+                    <ListItem
+                      key={project}
+                      button
+                      className={classes.nestedListItem}
+                    >
                       <ListItemText
                         className={classes.nestedListItemText}
                         primary={project}
@@ -108,7 +112,7 @@ function ApplicationSideMenu({ open, onClose }) {
                 </List>
               </Collapse>
             )}
-          </>
+          </Fragment>
         ))}
       </List>
     </Drawer>

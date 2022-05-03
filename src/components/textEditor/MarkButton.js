@@ -1,3 +1,4 @@
+import { cloneElement } from 'react';
 import { useSlate } from 'slate-react';
 import ButtonComponent from '../UI/ButtonComponent';
 
@@ -7,13 +8,14 @@ function MarkButton({ format, icon, isMarkActive, toggleMark }) {
     <ButtonComponent
       iconButton
       square
-      active={isMarkActive(editor, format)}
       onMouseDown={event => {
         event.preventDefault();
         toggleMark(editor, format);
       }}
     >
-      {icon}
+      {cloneElement(icon, {
+        style: { color: isMarkActive(editor, format) ? '#f2f2f2' : '#333333' },
+      })}
     </ButtonComponent>
   );
 }

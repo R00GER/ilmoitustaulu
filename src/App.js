@@ -49,7 +49,7 @@ function App() {
         setItems={setItems}
         setSideMenuOpen={setSideMenuOpen}
       />
-      {isEmpty(projects) ? (
+      {!isEmpty(projects) ? (
         <ProjectsEmptyView setProjects={setProjects} projects={projects} />
       ) : (
         <DragDropContext onDragEnd={result => onDragEnd(result)}>

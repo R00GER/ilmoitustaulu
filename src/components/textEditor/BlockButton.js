@@ -1,3 +1,4 @@
+import { cloneElement } from 'react';
 import { useSlate } from 'slate-react';
 import ButtonComponent from '../UI/ButtonComponent';
 
@@ -7,18 +8,14 @@ function BlockButton({ format, icon, isBlockActive, toggleBlock }) {
     <ButtonComponent
       iconButton
       square
-      active={isBlockActive(
-        editor,
-        format,
-        'type',
-        //   TEXT_ALIGN_TYPES.includes(format) ? "align" : "type"
-      )}
       onMouseDown={event => {
         event.preventDefault();
         toggleBlock(editor, format);
       }}
     >
-      {icon}
+      {cloneElement(icon, {
+        style: { color: isBlockActive(editor, format) ? '#f2f2f2' : '#333333' },
+      })}
     </ButtonComponent>
   );
 }

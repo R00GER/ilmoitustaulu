@@ -6,6 +6,14 @@ import ItalicIcon from '@mui/icons-material/FormatItalic';
 import UnderlinedIcon from '@mui/icons-material/FormatUnderlined';
 import ListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import ListNumberedIcon from '@mui/icons-material/FormatListNumbered';
+import HeadingOneIcon from '@mui/icons-material/LooksOne';
+import HeadingTwoIcon from '@mui/icons-material/LooksTwo';
+import QuoteIcon from '@mui/icons-material/FormatQuote';
+import CodeIcon from '@mui/icons-material/Code';
+import AlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
+import AlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
+import AlignRightIcon from '@mui/icons-material/FormatAlignRight';
+import AlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
 import { Slate, Editable, withReact } from 'slate-react';
 import {
   Editor,
@@ -21,16 +29,18 @@ import BlockButton from './BlockButton';
 const useStyles = makeStyles({
   textEditorContainer: {
     // minHeight: "100px",
-    marginTop: '1rem',
+    // marginTop: '1rem',
   },
   buttonToolbar: {
+    //   background: '#1d1d1d'
     // borderBottom: "1px solid #3e4154",
     // borderTop: "1px solid #3e4154",
+    marginBottom: '0.25rem',
   },
 });
 
 const textEditorStyles = {
-  padding: '0.5rem',
+  padding: '0.5rem 12px',
 };
 
 function TextEditorContainer({ placeholder, autoFocus, value, onChange }) {
@@ -46,6 +56,7 @@ function TextEditorContainer({ placeholder, autoFocus, value, onChange }) {
   const editor = useMemo(() => withReact(createEditor()), []);
 
   const LIST_TYPES = ['numbered-list', 'bulleted-list'];
+  const TEXT_ALIGN_TYPES = ['left', 'center', 'right', 'justify'];
 
   const isMarkActive = (editor, format) => {
     const marks = Editor.marks(editor);
@@ -80,29 +91,32 @@ function TextEditorContainer({ placeholder, autoFocus, value, onChange }) {
   };
 
   const toggleBlock = (editor, format) => {
-    const isActive = isBlockActive(editor, format, 'type');
+    const isActive = isBlockActive(
+      editor,
+      format,
+      TEXT_ALIGN_TYPES.includes(format) ? 'align' : 'type',
+    );
     const isList = LIST_TYPES.includes(format);
 
     Transforms.unwrapNodes(editor, {
       match: n =>
         !Editor.isEditor(n) &&
         SlateElement.isElement(n) &&
-        LIST_TYPES.includes(n.type),
-      // !TEXT_ALIGN_TYPES.includes(format),
+        LIST_TYPES.includes(n.type) &&
+        !TEXT_ALIGN_TYPES.includes(format),
       split: true,
     });
-    const newProperties = {
-      type: isActive ? 'paragraph' : isList ? 'list-item' : format,
-    };
-    // if (TEXT_ALIGN_TYPES.includes(format)) {
-    //   newProperties = {
-    //     align: isActive ? undefined : format,
-    //   };
-    // } else {
-    //   newProperties = {
-    //     type: isActive ? "paragraph" : isList ? "list-item" : format,
-    // //   };
-    // }
+
+    let newProperties;
+    if (TEXT_ALIGN_TYPES.includes(format)) {
+      newProperties = {
+        align: isActive ? undefined : format,
+      };
+    } else {
+      newProperties = {
+        type: isActive ? 'paragraph' : isList ? 'list-item' : format,
+      };
+    }
     Transforms.setNodes(editor, newProperties);
 
     if (!isActive && isList) {
@@ -161,6 +175,30 @@ function TextEditorContainer({ placeholder, autoFocus, value, onChange }) {
             isMarkActive={isMarkActive}
             toggleMark={toggleMark}
           />
+          <MarkButton
+            format="code"
+            icon={<CodeIcon />}
+            isMarkActive={isMarkActive}
+            toggleMark={toggleMark}
+          />
+          <BlockButton
+            format="heading-one"
+            icon={<HeadingOneIcon />}
+            isBlockActive={isBlockActive}
+            toggleBlock={toggleBlock}
+          />
+          <BlockButton
+            format="heading-two"
+            icon={<HeadingTwoIcon />}
+            isBlockActive={isBlockActive}
+            toggleBlock={toggleBlock}
+          />
+          <BlockButton
+            format="block-quote"
+            icon={<QuoteIcon />}
+            isBlockActive={isBlockActive}
+            toggleBlock={toggleBlock}
+          />
           <BlockButton
             format="numbered-list"
             icon={<ListBulletedIcon />}
@@ -170,6 +208,30 @@ function TextEditorContainer({ placeholder, autoFocus, value, onChange }) {
           <BlockButton
             format="bulleted-list"
             icon={<ListNumberedIcon />}
+            isBlockActive={isBlockActive}
+            toggleBlock={toggleBlock}
+          />
+          <BlockButton
+            format="left"
+            icon={<AlignLeftIcon />}
+            isBlockActive={isBlockActive}
+            toggleBlock={toggleBlock}
+          />
+          <BlockButton
+            format="center"
+            icon={<AlignCenterIcon />}
+            isBlockActive={isBlockActive}
+            toggleBlock={toggleBlock}
+          />
+          <BlockButton
+            format="right"
+            icon={<AlignRightIcon />}
+            isBlockActive={isBlockActive}
+            toggleBlock={toggleBlock}
+          />
+          <BlockButton
+            format="justify"
+            icon={<AlignJustifyIcon />}
             isBlockActive={isBlockActive}
             toggleBlock={toggleBlock}
           />

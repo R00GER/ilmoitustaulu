@@ -8,7 +8,7 @@ function ButtonComponent({
   fullWidth,
   variant,
   onClick,
-  classes,
+  styles,
   text,
   iconButton,
   size,
@@ -34,9 +34,9 @@ function ButtonComponent({
         <IconButton
           sx={{
             borderRadius: square ? '0px' : '50%',
+            ...styles,
           }}
           selected={active || selected}
-          className={classes}
           onClick={onClick}
           onMouseDown={e => {
             if (onMouseDown) {
@@ -68,7 +68,6 @@ function ButtonComponent({
             }
           : {}),
       }}
-      className={classes}
       fullWidth={fullWidth}
       variant={variant}
       onClick={onClick}
@@ -87,7 +86,7 @@ ButtonComponent.propTypes = {
   fullWidth: PropTypes.bool,
   variant: PropTypes.string.isRequired,
   onClick: PropTypes.func,
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  styles: PropTypes.objectOf(PropTypes.string).isRequired,
   text: PropTypes.string,
   iconButton: PropTypes.bool,
   size: PropTypes.string,

@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { useDebounce } from 'use-hooks';
 import DeleteIcon from '@mui/icons-material/Delete';
 import TimeIcon from '@mui/icons-material/AccessTime';
+import LabelIcon from '@mui/icons-material/Label';
+import ArchiveIcon from '@mui/icons-material/Archive';
 import TextEditorContainer from '../textEditor/TextEditorContainer';
 import { EditableTextField } from '../UI/FieldComponents';
 import ButtonComponent from '../UI/ButtonComponent';
@@ -12,11 +14,14 @@ const useStyles = makeStyles({
     width: '50vw',
   },
   noteItemModalContentTitleContainer: {
-    padding: '0.5rem',
-    borderBottom: '1px solid #3e4154',
+    padding: '0.5rem 12px',
+    // borderBottom: '1px solid #3e4154',
   },
   noteItemModalContentNoteContainer: {
-    // padding: "0.5rem",
+    minHeight: '150px',
+  },
+  noteItemModalContentTools: {
+    padding: '4px',
   },
 });
 
@@ -54,14 +59,10 @@ function NoteItemModalContent({ item, handleSaveItem }) {
   };
 
   const tools = [
-    {
-      tooltipLabel: 'Remind',
-      icon: <TimeIcon />,
-    },
-    {
-      tooltipLabel: 'Delete note',
-      icon: <DeleteIcon />,
-    },
+    { tooltipLabel: 'Remind', icon: <TimeIcon /> },
+    { tooltipLabel: 'Add label', icon: <LabelIcon /> },
+    { tooltipLabel: 'Archive', icon: <ArchiveIcon /> },
+    { tooltipLabel: 'Delete note', icon: <DeleteIcon /> },
   ];
 
   return (
@@ -87,7 +88,11 @@ function NoteItemModalContent({ item, handleSaveItem }) {
       </div>
       <div className={classes.noteItemModalContentTools}>
         {tools.map(tool => (
-          <ButtonComponent iconButton tooltipLabel={tool.tooltipLabel}>
+          <ButtonComponent
+            styles={{ marginRight: '0.25rem' }}
+            iconButton
+            tooltipLabel={tool.tooltipLabel}
+          >
             {tool.icon}
           </ButtonComponent>
         ))}
